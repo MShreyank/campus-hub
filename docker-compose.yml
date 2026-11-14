@@ -1,0 +1,10 @@
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    ports: ["80:4000"]
+    env_file: .env          # copy .env.example to .env and fill it in
+    volumes:
+      - campus-data:/data   # SQLite database (and uploads if S3 is not configured)
+volumes:
+  campus-data:

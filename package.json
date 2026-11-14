@@ -1,0 +1,63 @@
+{
+  "name": "campus-hub",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Campus Hub — a campus community app for students and teachers.",
+  "scripts": {
+    "install:all": "npm install && npm --prefix server install && npm --prefix client install",
+    "dev:server": "npm --prefix server run dev",
+    "dev:client": "npm --prefix client run dev",
+    "build": "npm --prefix client run build",
+    "start": "npm --prefix server start",
+    "seed:demo": "npm --prefix server run seed:demo",
+    "electron:rebuild": "electron-rebuild --force --which-module better-sqlite3 --module-dir server",
+    "electron:dev": "npm run build && npm run electron:rebuild && electron .",
+    "electron:pack": "npm run build && npm run electron:rebuild && electron-builder --win nsis",
+    "electron:dir": "npm run build && npm run electron:rebuild && electron-builder --dir"
+  },
+  "main": "electron/main.cjs",
+  "devDependencies": {
+    "electron": "^35.3.0",
+    "electron-builder": "^26.0.12",
+    "@electron/rebuild": "^3.7.2"
+  },
+  "build": {
+    "appId": "com.campushub.app",
+    "productName": "Campus Hub",
+    "asar": true,
+    "asarUnpack": [
+      "server/node_modules/better-sqlite3/**"
+    ],
+    "files": [
+      "electron/**/*",
+      "server/**/*",
+      "client/dist/**/*",
+      "package.json",
+      "!server/**/*.log",
+      "!server/data/**/*",
+      "!server/.env"
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "Campus-Hub-Setup-${version}.${ext}",
+      "icon": "client/public/nexora.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Campus Hub"
+    }
+  }
+}
